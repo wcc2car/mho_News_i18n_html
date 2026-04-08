@@ -5,7 +5,7 @@ MHServerEmu 1.0 News 10-language support
 Copy the folder into \{GameFolder}\Apache\htdocs\ and replace the existing folder with the same name.
 
 
-=============( CHT TEXT )===========================================================================
+=============( CHT TEXT )=========================================
 
 MHServerEmu 1.0 版 主選單->新聞(News) 支援 10 種語文
 
