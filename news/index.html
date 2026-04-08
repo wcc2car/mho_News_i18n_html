@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MHServerEmu 1.0.0</title>
+    <link rel="stylesheet" href="css/main.css">
+    <style>
+        /* 語言選單樣式：固定在右上角，不干擾原有佈局 */
+        .lang-selector-container {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 1000;
+        }
+        #lang-select {
+            padding: 5px;
+            border-radius: 4px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            border: 1px solid #555;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div class="lang-selector-container">
+    <select id="lang-select" onchange="changeLanguage(this.value)">
+        <option value="en">English</option>
+        <option value="fr">Français</option>
+        <option value="de">Deutsch</option>
+        <option value="ru">Русский</option>
+        <option value="pt">Português</option>
+        <option value="es">Español</option>
+        <option value="zh-TW">繁體中文</option>
+        <option value="zh-CN">简体中文</option>
+        <option value="ja">日本語</option>
+        <option value="ko">한국어</option>
+    </select>
+</div>
+
+<div class="content-container">
+    <h1 id="txt-welcome">Welcome to Your Local Server!</h1>
+    <div class="slide-container">
+        <a href="#" onclick="myApi.OpenNewsUrl('http://localhost/news/patch-notes.html')">
+            <div class="big-slide slide" style="background-image: url('images/big-slide-1.jpg')">
+                <div class="slide-text-container">
+                    <span id="txt-patch-notes">MHServerEmu 1.0.0 Patch Notes</span>
+                </div>
+            </div>
+        </a>
+        <a href="#" onclick="myApi.OpenExternalBrowserFromJS('https://itembase.mhbugle.com/')">
+            <div class="big-slide slide" style="background-image: url('images/big-slide-2.jpg')">
+                <div class="slide-text-container">
+                    <span id="txt-item-base">Item Base</span>
+                </div>
+            </div>
+        </a>
+    </div>
+    <div class="slide-container">
+        <a href="#" onclick="myApi.OpenExternalBrowserFromJS('https://github.com/Crypto137/MHServerEmu')">
+            <div class="small-slide slide" style="background-image: url('images/small-slide-1.jpg')">
+                <div class="slide-text-container">
+                    <span id="txt-github">GitHub Repository</span>
+                </div>
+            </div>
+        </a>
+        <a href="#" onclick="myApi.OpenExternalBrowserFromJS('https://crypto137.github.io/MHServerEmu/')">
+            <div class="small-slide slide" style="background-image: url('images/small-slide-2.jpg')">
+                <div class="slide-text-container">
+                    <span id="txt-blog">MHServerEmu Blog</span>
+                </div>
+            </div>
+        </a>
+        <a href="#" onclick="myApi.OpenExternalBrowserFromJS('https://discord.gg/hjR8Bj52t3')">
+            <div class="small-slide slide" style="background-image: url('images/small-slide-3.jpg')">
+                <div class="slide-text-container">
+                    <span id="txt-discord">Join Our Discord</span>
+                </div>
+            </div>
+        </a>
+    </div>
+</div>
+
+<script>
+    const translations = {
+        'en': {
+            'welcome': 'Welcome to Your Local Server!',
+            'patch-notes': 'MHServerEmu 1.0.0 Patch Notes',
+            'item-base': 'Item Base',
+            'github': 'GitHub Repository',
+            'blog': 'MHServerEmu Blog',
+            'discord': 'Join Our Discord'
+        },
+        'fr': {
+            'welcome': 'Bienvenue sur votre serveur local !',
+            'patch-notes': 'Notes de mise à jour MHServerEmu 1.0.0',
+            'item-base': 'Base d’objets',
+            'github': 'Dépôt GitHub',
+            'blog': 'Blog MHServerEmu',
+            'discord': 'Rejoignez notre Discord'
+        },
+        'de': {
+            'welcome': 'Willkommen auf Ihrem lokalen Server!',
+            'patch-notes': 'MHServerEmu 1.0.0 Patchnotizen',
+            'item-base': 'Gegenstandsdatenbank',
+            'github': 'GitHub-Repository',
+            'blog': 'MHServerEmu Blog',
+            'discord': 'Tritt unserem Discord bei'
+        },
+        'ru': {
+            'welcome': 'Добро пожаловать на ваш локальный сервер!',
+            'patch-notes': 'Обновление MHServerEmu 1.0.0',
+            'item-base': 'База предметов',
+            'github': 'Репозиторий GitHub',
+            'blog': 'Блог MHServerEmu',
+            'discord': 'Наш Discord'
+        },
+        'pt': {
+            'welcome': 'Bem-vindo ao seu servidor local!',
+            'patch-notes': 'Notas de Atualização MHServerEmu 1.0.0',
+            'item-base': 'Base de Itens',
+            'github': 'Repositório GitHub',
+            'blog': 'Blog MHServerEmu',
+            'discord': 'Junte-se ao nosso Discord'
+        },
+        'es': {
+            'welcome': '¡Bienvenido a tu servidor local!',
+            'patch-notes': 'Notas del parche MHServerEmu 1.0.0',
+            'item-base': 'Base de objetos',
+            'github': 'Repositorio GitHub',
+            'blog': 'Blog de MHServerEmu',
+            'discord': 'Únete a nuestro Discord'
+        },
+        'zh-TW': {
+            'welcome': '歡迎來到區域伺服器！',
+            'patch-notes': 'MHServerEmu 1.0.0 更新日誌',
+            'item-base': '物品資料庫',
+            'github': 'GitHub 原始碼庫',
+            'blog': 'MHServerEmu 部落格',
+            'discord': '加入 Discord 社群'
+        },
+        'zh-CN': {
+            'welcome': '欢迎来到您的本地服务器！',
+            'patch-notes': 'MHServerEmu 1.0.0 更新日志',
+            'item-base': '道具数据库',
+            'github': 'GitHub 仓库',
+            'blog': 'MHServerEmu 博客',
+            'discord': '加入 Discord 频道'
+        },
+        'ja': {
+            'welcome': 'ローカルサーバーへようこそ！',
+            'patch-notes': 'MHServerEmu 1.0.0 パッチノート',
+            'item-base': 'アイテムベース',
+            'github': 'GitHub リポジトリ',
+            'blog': 'MHServerEmu ブログ',
+            'discord': 'Discordに参加'
+        },
+        'ko': {
+            'welcome': '로컬 서버에 오신 것을 환영합니다!',
+            'patch-notes': 'MHServerEmu 1.0.0 패치 노트',
+            'item-base': '아이템 베이스',
+            'github': 'GitHub 저장소',
+            'blog': 'MHServerEmu 블로그',
+            'discord': 'Discord 참여하기'
+        }
+    };
+
+    function changeLanguage(lang) {
+        const t = translations[lang];
+        if (!t) return;
+
+        document.getElementById('txt-welcome').innerText = t['welcome'];
+        document.getElementById('txt-patch-notes').innerText = t['patch-notes'];
+        document.getElementById('txt-item-base').innerText = t['item-base'];
+        document.getElementById('txt-github').innerText = t['github'];
+        document.getElementById('txt-blog').innerText = t['blog'];
+        document.getElementById('txt-discord').innerText = t['discord'];
+
+        // 記憶選擇
+        localStorage.setItem('preferredLanguage', lang);
+        document.getElementById('lang-select').value = lang;
+    }
+
+    // 初始化：檢查記憶或預設語言
+    window.onload = function() {
+        const savedLang = localStorage.getItem('preferredLanguage') || 'en';
+        changeLanguage(savedLang);
+    };
+</script>
+
+</body>
+</html>
